@@ -1,6 +1,7 @@
 :root {
     --primary-color: #1e0186;
     --secondary-color: #aa95f5;
+    --tertiary-color: white;
 }
 
 
@@ -49,9 +50,28 @@
     text-align: center;
     margin: 3.5%;
     color: purple;
-    font-size: 18px;
+    font-size: 20px;
     line-height: 1.2;
 }
+
+/* BUTTON */
+.btn {
+    outline: none;
+    border: none;
+    padding: 10px 25px;
+    background: var(--primary-color);
+    font-size: 20px;
+    border-radius: 12px;
+    color: var(--tertiary-color);
+}
+
+.btn:hover {
+    background: var(--secondary-color);
+  }
+ 
+  .btn:active {
+    background: var(--secondary-color);
+  }
 
 .answer-content {
     border: 2px solid rgb(0, 255, 0); 
