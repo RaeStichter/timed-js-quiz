@@ -4,6 +4,8 @@ var timerEl = document.querySelector("#countdown");             // timer element
 var titleQuestion = document.querySelector("#title-question");
 var textInfo = document.querySelector("#text-info");
 //var startBtn = document.querySelector("#start-btn");
+var selectedAnswer = "";
+var questionCounter = 0;
 
 // ---------------------------- QUIZ QUESTIONS ----------------------------
 var questions = [
@@ -15,7 +17,7 @@ var questions = [
             "3. Boolean",
             "4. All of the above"
         ],
-        answer: "4. All of the above"
+        answer: 3 //"4. All of the above"
     },
     {
         title: "Which symbol is used for comments in JavaScript?",
@@ -25,7 +27,7 @@ var questions = [
             "3. // comment",
             "4. *( comment )*"
         ],
-        answer: "3. // comment"
+        answer: 2 //"3. // comment"
     },
     {
         title: "What are the looping structures in JavaScript?",
@@ -35,7 +37,7 @@ var questions = [
             "3. While",
             "4. Option 1. and 3."
         ],
-        answer: "4. Option 1. and 3."
+        answer: 3 //"4. Option 1. and 3."
     }
 ];
 
@@ -52,7 +54,18 @@ var clickButtonHandler = function(event) {
         console.log("the start button was pressed");
         countDownTimer();
         //gameStart();
-        questionObject();
+        questionObject(questionCounter);
+    }
+    // if a choice/answer button was selected by the user
+    if (targetEl.matches('.choice-btn')) {
+        console.log(" A choice was made");
+        var selectedAnswer = targetEl.getAttribute("choice-id");
+        console.log(selectedAnswer);
+        //answerCheck(selectedAnswer);
+        // set value to global so other function can use
+        // selectedAnswer = userChoice;
+        console.log("selected answer variable: " + selectedAnswer);
+        answerCheck(selectedAnswer);
     }
 }
 
@@ -87,25 +100,35 @@ var clearMain = function() {
 
 // this will need to run inside of a loop
 //convert the current question into a manageable object
-var questionObject = function() {
+var questionObject = function(questionCounter) {
     console.log(questions);
+    console.log("This is the quesiton counter: " + questionCounter);
     var questionDataObj = {
-        title: questions[0].title,
-        c0: questions[0].choices[0],
-        c1: questions[0].choices[1],
-        c2: questions[0].choices[2],
-        c3: questions[0].choices[3],
-        a: questions[0].answer
+        title: questions[questionCounter].title,
+        c: [
+            questions[questionCounter].choices[0],
+            questions[questionCounter].choices[1],
+            questions[questionCounter].choices[2],
+            questions[questionCounter].choices[3]
+        ],
+        a: questions[questionCounter].answer
     };
     console.log(questionDataObj);
 
-    // call game start
-    gameStart(questionDataObj);
+    // initial setup call (we do not need to recreate buttons everytime)
+    if (questionCounter === 0) {
+        // call game start
+        initialStart(questionDataObj);
+    }
+    // call function to update buttons, not create them
+    else {
+        gameStart(questionDataObj);
+    }
+    
 }
 
-
-// Game Start
-var gameStart = function(questionDataObj) {   
+// initial Start
+var initialStart = function(questionDataObj) {   
     clearMain();
 
     // create container for question and answers
@@ -126,91 +149,63 @@ var gameStart = function(questionDataObj) {
     // append this new information into 
     //mainContentEl.appendChild(questionAnswerContainer); // move this to the end??
 
-    // ------ create buttons ----------
-    // create container for the buttons
-    //var choiceContainer = document.createElement("div");
-    //choiceContainer.className = "choices-container";
-
-    // create the choice buttons
-    var choice1 = document.createElement("button");
-    choice1.className = "choice-btn";
-    choice1.textContent = questionDataObj.c0;
-    questionAnswerContainer.appendChild(choice1);
-
-    var choice2 = document.createElement("button");
-    choice2.className = "choice-btn";
-    choice2.textContent = questionDataObj.c1;
-    questionAnswerContainer.appendChild(choice2);
-
-    var choice3 = document.createElement("button");
-    choice3.className = "choice-btn";
-    choice3.textContent = questionDataObj.c2;
-    questionAnswerContainer.appendChild(choice3);
-
-    var choice4 = document.createElement("button");
-    choice4.className = "choice-btn";
-    choice4.textContent = questionDataObj.c3;
-    questionAnswerContainer.appendChild(choice4);
-
-    
-    
-    
-    
-    
-    
-    
-
-    
-    
-    
+    // ------ Dynamically create buttons ----------
+     
+    for (i = 0; i < questionDataObj.c.length; i++) {
+        var choice = document.createElement("button");
+        choice.className = "choice-btn";
+        choice.textContent = questionDataObj.c[i];
+        choice.setAttribute("choice-id", i);
+        questionAnswerContainer.appendChild(choice);
+    };
     
     mainContentEl.appendChild(questionAnswerContainer);
-
 }    
 
-// // dynamic button creation
-// var createChoiceButton = function(questionDataObj) {
-//     // create container for the buttons
-//     var choiceContainer = document.createElement("div");
-//     choiceContainer.className = "choices-container";
-
-//     // create the choice buttons
-//     var choice1 = document.createElement("button");
-//     choice1.className = "start-btn";
-//     choice1.textContent = 
-
-
+var gameStart = function(questionDataObj) {
+    // get element id's for the container and the elements
+    // // container
+    // var questionAnswerContainer = document.getElementsByClassName("qa-container");
+    // question 
+    //var questionInfoEl = document.getAttribute("question-id");
+    // var selectedAnswer = targetEl.getAttribute("choice-id");
+    var questionInfoEl = document.querySelector(".question-info");
+    console.log(questionInfoEl);
+    questionInfoEl.innerHTML = "<h3 class='question-text'>" + questionDataObj.title;
 
 
+    // set the new text for the quesion
+    //questionDataObj.title = questionInfoEl.textContent;
+    
+}
+
+// check the answer
+var answerCheck = function(selectedAnswer, timeRemain) {
+    console.log("This is the selected answer: " + selectedAnswer);
+    console.log("This is the actual answer: " + questions[questionCounter].answer);
+
+    // Check the user's selected answer against the actual asswer
+    if (parseInt(selectedAnswer) === questions[questionCounter].answer) {
+        console.log("question answered correctly!")
+    }
+    else {
+        console.log("question answered incorrectly!")
+    }
+
+    
 
 
 
 
 
-//     // // give it some content
-//     // var newConent = document.createTextNode("this is new content!!!");
-
-//     // //add content to the new div
-//     // choiceContainer.appendChild(newConent);
-
-//     // // add new element and content into the DOM
-//     // var currentDiv = document.getElementById("questions-holding");
-//     // document.body.insertBefore(choiceContainer, currentDiv);
-
-
-
-
-
-//     // create choice buttons
-//     // var choiceButtonEl = document.createElement("button");
-//     // choiceButtonEl.textContent = questions[1].choices[1];
-//     // choiceButtonEl.className = "btn";
-
-//     // choiceContainer.appendChild(choiceButtonEl);
-
-//     // return choiceContainer;
-
-// }
+    if (timeRemain > 0 || questionCounter < questions.length) {
+        questionCounter++;
+        questionObject(questionCounter);
+    }
+    else {
+        alert("end");
+    }
+}
 
 
 
