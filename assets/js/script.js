@@ -61,9 +61,6 @@ var clickButtonHandler = function(event) {
         console.log(" A choice was made");
         var selectedAnswer = targetEl.getAttribute("choice-id");
         console.log(selectedAnswer);
-        //answerCheck(selectedAnswer);
-        // set value to global so other function can use
-        // selectedAnswer = userChoice;
         console.log("selected answer variable: " + selectedAnswer);
         answerCheck(selectedAnswer);
     }
@@ -158,8 +155,15 @@ var initialStart = function(questionDataObj) {
         choice.setAttribute("choice-id", i);
         questionAnswerContainer.appendChild(choice);
     };
+
+    // ------- Create location for correct or wrong to go -------
+    // var correctWrongContainer = document.createElement("div1");
+    // correctWrongContainer.className = ".answer-content";
+    // correctWrongContainer.innerHTML = "<h3 class='answer-text'>" + "wrong";
+    // questionAnswerContainer.appendChild(correctWrongContainer);
     
     mainContentEl.appendChild(questionAnswerContainer);
+    //mainContentEl.appendChild(correctWrongContainer);
 }    
 
 var gameStart = function(questionDataObj) {
@@ -181,22 +185,38 @@ var gameStart = function(questionDataObj) {
 
 // check the answer
 var answerCheck = function(selectedAnswer, timeRemain) {
+    // object to hold text to display to the user
+    var result = "";
+    
     console.log("This is the selected answer: " + selectedAnswer);
     console.log("This is the actual answer: " + questions[questionCounter].answer);
 
     // Check the user's selected answer against the actual asswer
     if (parseInt(selectedAnswer) === questions[questionCounter].answer) {
-        console.log("question answered correctly!")
+        console.log("question answered correctly!");
+        result = "Correct!";
     }
     else {
-        console.log("question answered incorrectly!")
+        console.log("question answered incorrectly!");
+        result = "Wrong!";
     }
-
     
-
-
-
-
+    
+    // intitial check, this is used to create the dynamic element to hold results.
+    if (questionCounter === 0) {
+        // ------- Create location for correct or wrong to go -------
+        var questionAnswerContainer = document.querySelector(".qa-container");
+        
+        var correctWrongContainer = document.createElement("div1");
+        correctWrongContainer.className = ".answer-content";
+        correctWrongContainer.innerHTML = "<h3 class='answer-text'>" + result;
+        questionAnswerContainer.appendChild(correctWrongContainer);
+        mainContentEl.appendChild(correctWrongContainer);
+    }
+    // call function to update buttons, not create them
+    else {
+        console.log("Fill this out!");
+    }
 
     if (timeRemain > 0 || questionCounter < questions.length) {
         questionCounter++;
@@ -206,21 +226,6 @@ var answerCheck = function(selectedAnswer, timeRemain) {
         alert("end");
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
