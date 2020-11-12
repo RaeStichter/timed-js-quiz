@@ -88,6 +88,11 @@ body {
     border: 2px solid rgb(255, 0, 0); 
     padding: 5px 5px;
     list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 .question-info {
@@ -98,6 +103,12 @@ body {
 .question-text {
     color: var(--quad-color);
     margin: 5px 0 20px;
+}
+
+.choices-container {
+    border: 2px solid rgb(255, 230, 0); 
+    padding: 5px 5px;
+    list-style: none;
 }
 
 
@@ -112,11 +123,23 @@ body {
     color: var(--tertiary-color);
 }
 
-.btn:hover {
+.choice-btn {
+    outline: none;
+    border: none;
+    padding: 10px 25px;
+    background: var(--primary-color);
+    font-size: 20px;
+    border-radius: 12px;
+    color: var(--tertiary-color);
+}
+
+.start-btn:hover,
+.choice-btn:hover {
     background: var(--secondary-color);
 }
  
-.btn:active {
+.start-btn:active,
+.start-btn:active {
     background: var(--secondary-color);
 }
 

@@ -124,53 +124,93 @@ var gameStart = function(questionDataObj) {
     questionAnswerContainer.appendChild(questionInfoEl);
 
     // append this new information into 
+    //mainContentEl.appendChild(questionAnswerContainer); // move this to the end??
+
+    // ------ create buttons ----------
+    // create container for the buttons
+    //var choiceContainer = document.createElement("div");
+    //choiceContainer.className = "choices-container";
+
+    // create the choice buttons
+    var choice1 = document.createElement("button");
+    choice1.className = "choice-btn";
+    choice1.textContent = questionDataObj.c0;
+    questionAnswerContainer.appendChild(choice1);
+
+    var choice2 = document.createElement("button");
+    choice2.className = "choice-btn";
+    choice2.textContent = questionDataObj.c1;
+    questionAnswerContainer.appendChild(choice2);
+
+    var choice3 = document.createElement("button");
+    choice3.className = "choice-btn";
+    choice3.textContent = questionDataObj.c2;
+    questionAnswerContainer.appendChild(choice3);
+
+    var choice4 = document.createElement("button");
+    choice4.className = "choice-btn";
+    choice4.textContent = questionDataObj.c3;
+    questionAnswerContainer.appendChild(choice4);
+
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
     mainContentEl.appendChild(questionAnswerContainer);
-
-
-
-    // ther ewill be a for loop here for all of the questions
-
-    // populate the question
-    //titleQuestion.textContent = questions[1].title;
-
-    // call the createChoiceButton function with the funciton input of the current question index
-    //var action = createChoiceButton();
-    //console.log(questions[1].choices[1]);
-
-    //createChoiceButton();
 
 }    
 
-// dynamic button creation
-var createChoiceButton = function() {
-    // create container for the buttons
-    var choiceContainer = document.createElement("div");
-    //choiceContainer.className = "choices-container";
+// // dynamic button creation
+// var createChoiceButton = function(questionDataObj) {
+//     // create container for the buttons
+//     var choiceContainer = document.createElement("div");
+//     choiceContainer.className = "choices-container";
 
-    // give it some content
-    var newConent = document.createTextNode("this is new content!!!");
-
-    //add content to the new div
-    choiceContainer.appendChild(newConent);
-
-    // add new element and content into the DOM
-    var currentDiv = document.getElementById("questions-holding");
-    document.body.insertBefore(choiceContainer, currentDiv);
+//     // create the choice buttons
+//     var choice1 = document.createElement("button");
+//     choice1.className = "start-btn";
+//     choice1.textContent = 
 
 
 
 
 
-    // create choice buttons
-    // var choiceButtonEl = document.createElement("button");
-    // choiceButtonEl.textContent = questions[1].choices[1];
-    // choiceButtonEl.className = "btn";
 
-    // choiceContainer.appendChild(choiceButtonEl);
 
-    // return choiceContainer;
 
-}
+
+//     // // give it some content
+//     // var newConent = document.createTextNode("this is new content!!!");
+
+//     // //add content to the new div
+//     // choiceContainer.appendChild(newConent);
+
+//     // // add new element and content into the DOM
+//     // var currentDiv = document.getElementById("questions-holding");
+//     // document.body.insertBefore(choiceContainer, currentDiv);
+
+
+
+
+
+//     // create choice buttons
+//     // var choiceButtonEl = document.createElement("button");
+//     // choiceButtonEl.textContent = questions[1].choices[1];
+//     // choiceButtonEl.className = "btn";
+
+//     // choiceContainer.appendChild(choiceButtonEl);
+
+//     // return choiceContainer;
+
+// }
 
 
 
