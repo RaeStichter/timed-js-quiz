@@ -6,6 +6,12 @@ var textInfo = document.querySelector("#text-info");
 //var startBtn = document.querySelector("#start-btn");
 var selectedAnswer = "";
 var questionCounter = 0;
+// var timeReduce = 0;
+// var timeRemain = 75;
+// var time = 75;
+
+var x = 100;
+var t = 0;
 
 // ---------------------------- QUIZ QUESTIONS ----------------------------
 var questions = [
@@ -66,25 +72,57 @@ var clickButtonHandler = function(event) {
     }
 }
 
-// function to countdown from 
-var countDownTimer = function() {
-    var timeRemain = 5;
+// // function to countdown from 
+// var countDownTimer = function(timeReduce,timeRemain) {
+//     //clearInterval(countInterval);
+//     //console.log("Time Reduce" + timeReduce + "    time remain" + timeRemain);
+//     time = timeRemain - timeReduce;
+//     //time;
+//     //console.log("Time remaining   " + timeRemain);
+//     //debugger;
+//     //parseInt(timeRemain);
+//     //var timeRemain = 75;
+//     // function will be called every second (1000ms) to display the countdown in the HTML page
+//     // (the function is writen in the original declaration)
+//     return time;
+// };
+// var countInterval = setInterval(function() {
+        
+//     //time = timeRemain - timeReduce;
+//     // if timeRemain is greater than 1
+//     if (time > 0) {
+//         // set the value timerEl to timeRemain
+//         timerEl.textContent = time;
+//         time--;
+//     }
+//     else {
+//         // timeRemain gets to 0, leave 0 remaining
+//         //timerEl.textContent = timeRemain;
+//         clearInterval(countInterval);
+//         timerEl.textContent = "No More!";
+//     }
+// }, 1000);
 
-    // function will be called every second (1000ms) to display the countdown in the HTML page
-    // (the function is writen in the original declaration)
-    var timeInterval = setInterval(function() {
-        // if timeRemain is greater than 1
-        if (timeRemain > 0) {
-            // set the value timerEl to timeRemain
-            timerEl.textContent = timeRemain;
-            timeRemain--;
-        }
-        else {
-            // timeRemain gets to 0, leave 0 remaining
-            timerEl.textContent = timeRemain;
-        }
-    }, 1000);
-} 
+
+// googled this function.  counts down and removes time when we update x
+function countDownTimer() {
+    if (t==0) t = setInterval(countDownTimer, 1000);
+
+    timerEl.textContent = x;
+    x--;
+
+    if (x < 0) {
+        timerEl.textContent = "Done!";
+        clearTimeout(t);
+        ticker = 0;
+    }
+}
+
+function stopCounter() {
+    clearTimeout(t);
+    t = 0;
+    x++;
+}
 
 // clear the contents of titleQuestion
 var clearMain = function() {
@@ -196,6 +234,10 @@ var answerCheck = function(selectedAnswer, timeRemain) {
     else {
         console.log("question answered incorrectly!");
         result = "Wrong!";
+        x = x - 10;
+        // timeReduce = 10;
+        // time = timeRemain - timeReduce;
+        // countDownTimer(timeReduce);
     }
     
     // intitial check, this is used to create the dynamic element to hold results.
