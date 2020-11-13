@@ -126,7 +126,8 @@ body {
 
 
 /* BUTTON */
-.start-btn {
+.start-btn,
+.submit-btn {
     outline: none;
     border: none;
     padding: 10px 25px;
@@ -149,12 +150,14 @@ body {
 }
 
 .start-btn:hover,
-.choice-btn:hover {
+.choice-btn:hover,
+.submit-btn:hover {
     background: var(--secondary-color);
 }
  
 .start-btn:active,
-.start-btn:active {
+.start-btn:active,
+.submit-btn:active {
     background: var(--secondary-color);
 }
 
@@ -185,7 +188,11 @@ body {
 }
 
 
-
+.form-input {
+    color: var(--quad-color);
+    margin: 5px 0 20px;
+    text-align: left;
+}
 
 
 

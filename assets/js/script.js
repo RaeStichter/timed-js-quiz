@@ -6,7 +6,7 @@ var textInfo = document.querySelector("#text-info");
 var selectedAnswer = "";
 var questionCounter = 0;
 // timer variables
-var x = 100;
+var x = 75;
 var t = 0;
 
 // ---------------------------- QUIZ QUESTIONS ----------------------------
@@ -61,6 +61,10 @@ var clickButtonHandler = function(event) {
         var selectedAnswer = targetEl.getAttribute("choice-id");
         answerCheck(selectedAnswer);
     }
+    //submit button
+    if (targetEl.matches('.submit-btn')) {
+        saveHighScore();
+    }
 }
 
 // --------------- COUNTER ---------------
@@ -72,9 +76,12 @@ function countDownTimer() {
     x--;
 
     if (x < 0) {
-        timerEl.textContent = "Done!";
+        endGameLogic();
+        timerEl.textContent = 0;
         clearTimeout(t);
         ticker = 0;
+        //window.alert("end");
+        //endGameLogic();
     }
 }
 
@@ -122,6 +129,7 @@ var questionObject = function(questionCounter) {
 // initial Start, run if this is the first question. creates the dynamic HTML elements
 var initialStart = function(questionDataObj) {   
     clearMain(); // clear intiial screen
+    
     // create container for question and answers
     var questionAnswerContainer = document.createElement("li");
     questionAnswerContainer.className = "qa-container";
@@ -196,16 +204,51 @@ var answerCheck = function(selectedAnswer, timeRemain) {
         correctWrongContainer.textContent = result;
     }
     // Loop logic
-    if ((x > 0) && (questionCounter <= questions.length)) {
+    var max = questions.length - 1;
+    
+    console.log("max: " + max);
+    console.log("x value: " + x);
+    if (questionCounter < max) {
+        
+        console.log("x value: " + x + "questiion counter: " + questionCounter + "quesitons.length: " + questions.length);
         questionCounter++;
-        console.log(questionCounter, questions.length);
         questionObject(questionCounter);
     }
-    //window.alert("End!");
     else {
-        alert("end");
+        endGameLogic();
+        // stopCounter();
+        // window.alert("end");
     }
 }
 
-// ---------------------------- EVENT LISTENERS ----------------------------
+var endGameLogic = function() {
+    stopCounter();
+    console.log("Timeout triggered!");
+    var endGameMsg = "All Done!";
+    var finalScore = ("Your final score is " + x);
+    //change text on screen
+    var msgInfoEl = document.querySelector(".question-info");
+    msgInfoEl.innerHTML = "<h3 class='question-text'>" + endGameMsg + "</br>" + "<h4 class='question-text'>" + finalScore;
+    //hide buttons
+    for (i = 0; i < 4; i++) {
+        document.querySelector(".choice-btn[choice-id='" + i + "']").hidden = true;
+    };
+    document.getElementById("initials-form").hidden = false; 
+}
+
+var saveHighScore = function() {
+    var saveInitials = document.querySelector("input[name='initials']").value;
+    var finalScore = x;
+    var highScore = {
+        initials: saveInitials,
+        score: finalScore
+    }
+    localStorage.setItem("highScore", JSON.stringify(highScore));
+}
+
+
+
+// ---------------------------- EVENT LISTENERS and load ----------------------------
 mainContentEl.addEventListener("click", clickButtonHandler);
+
+document.getElementById("initials-form").hidden = true;
