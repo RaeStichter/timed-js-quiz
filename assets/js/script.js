@@ -126,8 +126,7 @@ var questionObject = function(questionCounter) {
 
 // initial Start
 var initialStart = function(questionDataObj) {   
-    clearMain();
-
+    clearMain(); // clear intiial screen
     // create container for question and answers
     var questionAnswerContainer = document.createElement("li");
     questionAnswerContainer.className = "qa-container";
@@ -154,6 +153,7 @@ var initialStart = function(questionDataObj) {
         choice.textContent = questionDataObj.c[i];
         choice.setAttribute("choice-id", i);
         questionAnswerContainer.appendChild(choice);
+        console.log(choice);
     };
 
     // ------- Create location for correct or wrong to go -------
@@ -167,20 +167,17 @@ var initialStart = function(questionDataObj) {
 }    
 
 var gameStart = function(questionDataObj) {
-    // get element id's for the container and the elements
-    // // container
-    // var questionAnswerContainer = document.getElementsByClassName("qa-container");
-    // question 
-    //var questionInfoEl = document.getAttribute("question-id");
-    // var selectedAnswer = targetEl.getAttribute("choice-id");
+    // get question information so we can update the correct fields
     var questionInfoEl = document.querySelector(".question-info");
     console.log(questionInfoEl);
     questionInfoEl.innerHTML = "<h3 class='question-text'>" + questionDataObj.title;
 
-
-    // set the new text for the quesion
-    //questionDataObj.title = questionInfoEl.textContent;
-    
+    // get button information so we can update the correct fields
+    for (i = 0; i < questionDataObj.c.length; i++) {
+        var choice = document.querySelector(".choice-btn[choice-id='" + i + "']");
+        console.log("game start function: " + choice.textContent);
+        choice.textContent = questionDataObj.c[i];
+    };    
 }
 
 // check the answer
@@ -201,25 +198,26 @@ var answerCheck = function(selectedAnswer, timeRemain) {
         result = "Wrong!";
     }
     
-    
     // intitial check, this is used to create the dynamic element to hold results.
     if (questionCounter === 0) {
         // ------- Create location for correct or wrong to go -------
         var questionAnswerContainer = document.querySelector(".qa-container");
         
-        var correctWrongContainer = document.createElement("div1");
+        var correctWrongContainer = document.createElement("div");
         correctWrongContainer.className = ".answer-content";
         correctWrongContainer.innerHTML = "<h3 class='answer-text'>" + result;
         questionAnswerContainer.appendChild(correctWrongContainer);
         mainContentEl.appendChild(correctWrongContainer);
     }
-    // call function to update buttons, not create them
+    // call function to update element text and not recreate
     else {
-        console.log("Fill this out!");
+        var correctWrongContainer = document.querySelector(".answer-text");     
+        correctWrongContainer.textContent = result;
     }
 
-    if (timeRemain > 0 || questionCounter < questions.length) {
+    if (timeRemain < 0 || questionCounter < questions.length) {
         questionCounter++;
+        //document.querySelector(".qa-container").hidden = true;
         questionObject(questionCounter);
     }
     else {
