@@ -3,13 +3,9 @@ var mainContentEl = document.querySelector("#question-content");
 var timerEl = document.querySelector("#countdown");             // timer element to countdown
 var titleQuestion = document.querySelector("#title-question");
 var textInfo = document.querySelector("#text-info");
-//var startBtn = document.querySelector("#start-btn");
 var selectedAnswer = "";
 var questionCounter = 0;
-// var timeReduce = 0;
-// var timeRemain = 75;
-// var time = 75;
-
+// timer variables
 var x = 100;
 var t = 0;
 
@@ -49,62 +45,26 @@ var questions = [
 
 // ---------------------------- MAIN FUNCTIONS ----------------------------
 
+// --------------- BUTTON CLICK HANDLER ---------------
 // This will be run any time a button is clicked.
 var clickButtonHandler = function(event) {
     // get target elemnt from event
     var targetEl = event.target;
-    console.log(targetEl);
 
-    // Start Quiz button was clicked
+    // Start Quiz button was clicked.  call timer function and question object
     if (targetEl.matches('.start-btn')) { // matches compares class
-        console.log("the start button was pressed");
         countDownTimer();
-        //gameStart();
         questionObject(questionCounter);
     }
-    // if a choice/answer button was selected by the user
-    if (targetEl.matches('.choice-btn')) {
-        console.log(" A choice was made");
+    // if a choice/answer button was selected by the user.  Set choice id and check answer
+    if (targetEl.matches('.choice-btn')) { // matches compares class
         var selectedAnswer = targetEl.getAttribute("choice-id");
-        console.log(selectedAnswer);
-        console.log("selected answer variable: " + selectedAnswer);
         answerCheck(selectedAnswer);
     }
 }
 
-// // function to countdown from 
-// var countDownTimer = function(timeReduce,timeRemain) {
-//     //clearInterval(countInterval);
-//     //console.log("Time Reduce" + timeReduce + "    time remain" + timeRemain);
-//     time = timeRemain - timeReduce;
-//     //time;
-//     //console.log("Time remaining   " + timeRemain);
-//     //debugger;
-//     //parseInt(timeRemain);
-//     //var timeRemain = 75;
-//     // function will be called every second (1000ms) to display the countdown in the HTML page
-//     // (the function is writen in the original declaration)
-//     return time;
-// };
-// var countInterval = setInterval(function() {
-        
-//     //time = timeRemain - timeReduce;
-//     // if timeRemain is greater than 1
-//     if (time > 0) {
-//         // set the value timerEl to timeRemain
-//         timerEl.textContent = time;
-//         time--;
-//     }
-//     else {
-//         // timeRemain gets to 0, leave 0 remaining
-//         //timerEl.textContent = timeRemain;
-//         clearInterval(countInterval);
-//         timerEl.textContent = "No More!";
-//     }
-// }, 1000);
-
-
-// googled this function.  counts down and removes time when we update x
+// --------------- COUNTER ---------------
+// counts down and removes time when we update x
 function countDownTimer() {
     if (t==0) t = setInterval(countDownTimer, 1000);
 
@@ -124,6 +84,7 @@ function stopCounter() {
     x++;
 }
 
+// --------------- CLEARS ORIGINAL DISPLAY ---------------
 // clear the contents of titleQuestion
 var clearMain = function() {
     titleQuestion.textContent = "";
@@ -132,12 +93,10 @@ var clearMain = function() {
 
 }
 
-
-// this will need to run inside of a loop
-//convert the current question into a manageable object
+//--------------- QUESTION OBJECT ---------------
+// convert the current question into a manageable object based on question counter
+// based on question counter, directs to create HTML fields or update them
 var questionObject = function(questionCounter) {
-    console.log(questions);
-    console.log("This is the quesiton counter: " + questionCounter);
     var questionDataObj = {
         title: questions[questionCounter].title,
         c: [
@@ -148,8 +107,6 @@ var questionObject = function(questionCounter) {
         ],
         a: questions[questionCounter].answer
     };
-    console.log(questionDataObj);
-
     // initial setup call (we do not need to recreate buttons everytime)
     if (questionCounter === 0) {
         // call game start
@@ -157,74 +114,58 @@ var questionObject = function(questionCounter) {
     }
     // call function to update buttons, not create them
     else {
-        gameStart(questionDataObj);
+        gameOngoing(questionDataObj);
     }
-    
 }
 
-// initial Start
+// --------------- INITIAL START ---------------
+// initial Start, run if this is the first question. creates the dynamic HTML elements
 var initialStart = function(questionDataObj) {   
     clearMain(); // clear intiial screen
     // create container for question and answers
     var questionAnswerContainer = document.createElement("li");
     questionAnswerContainer.className = "qa-container";
 
-    // eventually add the question counter and utilize set attribute to questionAnswer Container
-
     // create div to hold the question
     var questionInfoEl = document.createElement("div");
     questionInfoEl.className = "question-info";
     questionInfoEl.innerHTML = "<h3 class='question-text'>" + questionDataObj.title;
-    //taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskDataObj.name + "</h3><span class='task-type'>" + taskDataObj.type + "</span>";
 
     // append the new div to the container
     questionAnswerContainer.appendChild(questionInfoEl);
 
-    // append this new information into 
-    //mainContentEl.appendChild(questionAnswerContainer); // move this to the end??
-
-    // ------ Dynamically create buttons ----------
-     
+    // ------ Dynamically create buttons ----------   
     for (i = 0; i < questionDataObj.c.length; i++) {
         var choice = document.createElement("button");
         choice.className = "choice-btn";
         choice.textContent = questionDataObj.c[i];
         choice.setAttribute("choice-id", i);
         questionAnswerContainer.appendChild(choice);
-        console.log(choice);
     };
-
-    // ------- Create location for correct or wrong to go -------
-    // var correctWrongContainer = document.createElement("div1");
-    // correctWrongContainer.className = ".answer-content";
-    // correctWrongContainer.innerHTML = "<h3 class='answer-text'>" + "wrong";
-    // questionAnswerContainer.appendChild(correctWrongContainer);
     
+    // append all new information into main element
     mainContentEl.appendChild(questionAnswerContainer);
-    //mainContentEl.appendChild(correctWrongContainer);
 }    
 
-var gameStart = function(questionDataObj) {
+// --------------- ONGOING GAME LOGIC ---------------
+// this function updates already created HTML elements
+var gameOngoing = function(questionDataObj) {
     // get question information so we can update the correct fields
     var questionInfoEl = document.querySelector(".question-info");
-    console.log(questionInfoEl);
     questionInfoEl.innerHTML = "<h3 class='question-text'>" + questionDataObj.title;
 
     // get button information so we can update the correct fields
     for (i = 0; i < questionDataObj.c.length; i++) {
         var choice = document.querySelector(".choice-btn[choice-id='" + i + "']");
-        console.log("game start function: " + choice.textContent);
         choice.textContent = questionDataObj.c[i];
     };    
 }
 
-// check the answer
+// --------------- CHECK USER ANSWER ---------------
+// check the answer that the user provided.  This is triggered by the click response
 var answerCheck = function(selectedAnswer, timeRemain) {
     // object to hold text to display to the user
     var result = "";
-    
-    console.log("This is the selected answer: " + selectedAnswer);
-    console.log("This is the actual answer: " + questions[questionCounter].answer);
 
     // Check the user's selected answer against the actual asswer
     if (parseInt(selectedAnswer) === questions[questionCounter].answer) {
@@ -234,10 +175,8 @@ var answerCheck = function(selectedAnswer, timeRemain) {
     else {
         console.log("question answered incorrectly!");
         result = "Wrong!";
+        // time penalty, global variable update
         x = x - 10;
-        // timeReduce = 10;
-        // time = timeRemain - timeReduce;
-        // countDownTimer(timeReduce);
     }
     
     // intitial check, this is used to create the dynamic element to hold results.
@@ -256,18 +195,17 @@ var answerCheck = function(selectedAnswer, timeRemain) {
         var correctWrongContainer = document.querySelector(".answer-text");     
         correctWrongContainer.textContent = result;
     }
-
-    if (timeRemain < 0 || questionCounter < questions.length) {
+    // Loop logic
+    if ((x > 0) && (questionCounter <= questions.length)) {
         questionCounter++;
-        //document.querySelector(".qa-container").hidden = true;
+        console.log(questionCounter, questions.length);
         questionObject(questionCounter);
     }
+    //window.alert("End!");
     else {
         alert("end");
     }
 }
-
-
 
 // ---------------------------- EVENT LISTENERS ----------------------------
 mainContentEl.addEventListener("click", clickButtonHandler);
