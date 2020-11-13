@@ -40,6 +40,46 @@ var questions = [
             "4. Option 1. and 3."
         ],
         answer: 3 //"4. Option 1. and 3."
+    },
+    {
+        title: "What symbol is used to call an id?",
+        choices: [
+            "1. %",
+            "2. $",
+            "3. #",
+            "4. ."
+        ],
+        answer: 2 //3. #",
+    },
+    {
+        title: "What symbol is used to call a class?",
+        choices: [
+            "1. .",
+            "2. $",
+            "3. #",
+            "4. &"
+        ],
+        answer: 0 //"1. .",
+    },
+    {
+        title: "DOM stands for:_____________",
+        choices: [
+            "1. Document Object Manipulation",
+            "2. Document Object Model",
+            "3. Dock Object Make",
+            "4. DOM"
+        ],
+        answer: 1 //"2. Document Object Model",
+    },
+    {
+        title: "A data attribute is used for what?",
+        choices: [
+            "1. Identifying backgroud color",
+            "2. FlexBox style",
+            "3. Custom data storage",
+            "4. Call to parent element"
+        ],
+        answer: 2 //"3. Custom data storage",
     }
 ];
 
